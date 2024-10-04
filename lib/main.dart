@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './widgets/nav.dart';
+import 'components/nav.dart';
 
 void main() {
   runApp(const MainApp());

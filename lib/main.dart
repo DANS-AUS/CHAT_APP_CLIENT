@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'components/nav.dart';
+import 'pages/profile.dart';
 
 void main() {
   runApp(const MainApp());
@@ -23,9 +24,7 @@ class _MainAppState extends State<MainApp> {
     Text(
       'Index 1: New Chat',
     ),
-    Text(
-      'Index 2: Profile',
-    ),
+    ProfileView(),
   ];
 
   void _onSelect(int index) {

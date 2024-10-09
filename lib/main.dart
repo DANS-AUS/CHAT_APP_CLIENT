@@ -1,3 +1,4 @@
+import 'package:chat/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'components/nav.dart';
 
@@ -17,9 +18,7 @@ class _MainAppState extends State<MainApp> {
 
   // Replace Text with page views.
   static const List<Widget> _views = <Widget>[
-    Text(
-      'Index 0: Home',
-    ),
+   Home(),
     Text(
       'Index 1: New Chat',
     ),

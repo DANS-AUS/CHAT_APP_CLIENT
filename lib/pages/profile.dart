@@ -6,6 +6,25 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Index 2: This is the profile component!');
+    return const Padding(
+        padding: EdgeInsets.fromLTRB(10, 60, 10, 0),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(Icons.group_add_outlined),
+                SizedBox(
+                  height: 40,
+                  width: 300,
+                  child: SearchBar(
+                    leading: Icon(Icons.search),
+                  ),
+                ),
+                Icon(Icons.notifications_outlined)
+              ],
+            )
+          ],
+        ));
   }
 }

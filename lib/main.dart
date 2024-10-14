@@ -17,12 +17,12 @@ class _MainAppState extends State<MainApp> {
   int selectedIdx = 0;
 
   // Replace Text with page views.
-  static const List<Widget> _views = <Widget>[
+  static final List<Widget> _views = <Widget>[
    Home(),
-    Text(
+    const Text(
       'Index 1: New Chat',
     ),
-    Text(
+    const Text(
       'Index 2: Profile',
     ),
   ];

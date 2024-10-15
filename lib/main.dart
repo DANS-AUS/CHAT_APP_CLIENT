@@ -19,7 +19,7 @@ class _MainAppState extends State<MainApp> {
 
   // Replace Text with page views.
   static const List<Widget> _views = <Widget>[
-   Home(),
+    Home(),
     Text(
       'Index 1: New Chat',
     ),

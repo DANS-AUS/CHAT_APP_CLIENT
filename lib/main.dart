@@ -1,6 +1,7 @@
 import 'package:chat/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'components/nav.dart';
+import 'pages/profile.dart';
 
 void main() {
   runApp(const MainApp());
@@ -18,13 +19,11 @@ class _MainAppState extends State<MainApp> {
 
   // Replace Text with page views.
   static const List<Widget> _views = <Widget>[
-   Home(),
+    Home(),
     Text(
       'Index 1: New Chat',
     ),
-    Text(
-      'Index 2: Profile',
-    ),
+    ProfileView(),
   ];
 
   void _onSelect(int index) {

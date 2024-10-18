@@ -1,12 +1,14 @@
 // Home page view.
 import 'package:chat/components/switch.dart';
+import 'package:chat/pages/message.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class SwitchModel extends ValueNotifier<bool> {
   SwitchModel() : super(true);
 
-  List<Map<String, dynamic>> data = [];
+  List<Map<String, dynamic>> data =
+      Home.fakeData.where((chat) => chat["receivers"].length < 2).toList();
 
   void onSwitchChange() {
     value = !value;
@@ -21,9 +23,10 @@ class SwitchModel extends ValueNotifier<bool> {
   }
 }
 
-// ignore: must_be_immutable
 class Home extends StatefulWidget {
-  Home({super.key});
+  const Home({
+    super.key,
+  });
 
   static const List<Map<String, dynamic>> fakeData = [
     {
@@ -47,6 +50,7 @@ class Home extends StatefulWidget {
     {
       'sender': 'Bob Smith',
       'receivers': ["Geese", "Panda", "Deer", "John"],
+      'chat_name': 'The best group',
       'content': 'How are you doing today?',
       'time': '2023-12-01 15:20:30'
     },
@@ -131,12 +135,17 @@ class _HomeState extends State<Home> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: SwitchWidget(
-                      titleOne: 'DIRECT',
-                      titleTwo: 'GROUP',
-                      switchModel: switchModel),
-                ),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                    child: SwitchWidget(
+                        titleOne: 'DIRECT',
+                        titleTwo: 'GROUP',
+                        value: switchModel.value,
+                        onTap: (bool val) => {
+                              setState(() {
+                                switchModel.onSwitchChange();
+                                switchModel.updateFilteredData();
+                              })
+                            })),
                 SizedBox(
                   height: MediaQuery.sizeOf(context).height / 1.5,
                   child: ListView.builder(
@@ -157,7 +166,7 @@ class _HomeState extends State<Home> {
 
 class ChatWidget extends StatelessWidget {
   final dynamic data;
-  const ChatWidget({super.key, required this.data});
+  ChatWidget({super.key, required this.data});
 
   String genSenderInitials() {
     final arr = data['sender'].split(' ');
@@ -180,41 +189,56 @@ class ChatWidget extends StatelessWidget {
     }
   }
 
+  getChatName() {
+    if (data['chat_name'] != null) {
+      return data['chat_name'];
+    }
+    var receivers = [...data['receivers']];
+    receivers.add(data['sender']);
+
+    return receivers.where((user) => user != 'John').join(", ");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        // crossAxisAlignment: CrossAxisAlignment,
-        children: [
-          CircleAvatar(
-            backgroundColor: Colors.black26,
-            child: Text(genSenderInitials()),
-          ),
-          Flexible(
-            flex: 2,
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [Text(data['sender']), Text(data['content'])],
+      child: GestureDetector(
+        onTap: () => {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => const Message()))
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.black26,
+              child: Text(genSenderInitials()),
+            ),
+            Flexible(
+              flex: 2,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text(getChatName()), Text(data['content'])],
+                  ),
                 ),
               ),
             ),
-          ),
-          Flexible(
-            child: Align(
-              alignment: Alignment.topRight,
-              child: Text(
-                getDate(data["time"]),
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+            Flexible(
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Text(
+                  getDate(data["time"]),
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

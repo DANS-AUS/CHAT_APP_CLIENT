@@ -1,17 +1,17 @@
-import 'package:chat/pages/home.dart';
 import 'package:flutter/material.dart';
 
 class SwitchWidget extends StatefulWidget {
   final String titleOne;
   final String titleTwo;
-  final SwitchModel switchModel;
+  final Function(bool value) onTap;
+  final bool value;
 
-  const SwitchWidget({
-    super.key,
-    required this.titleOne,
-    required this.titleTwo,
-    required this.switchModel,
-  });
+  const SwitchWidget(
+      {super.key,
+      required this.titleOne,
+      required this.titleTwo,
+      required this.value,
+      required this.onTap});
 
   @override
   State<SwitchWidget> createState() => _SwitchWidgetState();
@@ -22,10 +22,7 @@ class _SwitchWidgetState extends State<SwitchWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          widget.switchModel.onSwitchChange();
-          widget.switchModel.updateFilteredData();
-        });
+        widget.onTap(widget.value);
       },
       child: Center(
         child: Container(
@@ -36,9 +33,8 @@ class _SwitchWidgetState extends State<SwitchWidget> {
             alignment: Alignment.center,
             children: [
               AnimatedContainer(
-                alignment: widget.switchModel.value
-                    ? Alignment.centerLeft
-                    : Alignment.centerRight,
+                alignment:
+                    widget.value ? Alignment.centerLeft : Alignment.centerRight,
                 duration: const Duration(milliseconds: 250),
                 child: Container(
                   width: 150,
@@ -56,17 +52,13 @@ class _SwitchWidgetState extends State<SwitchWidget> {
                       child: Text(
                     widget.titleOne,
                     style: TextStyle(
-                        color: widget.switchModel.value
-                            ? Colors.white
-                            : Colors.black),
+                        color: widget.value ? Colors.white : Colors.black),
                   )),
                   Center(
                       child: Text(
                     widget.titleTwo,
                     style: TextStyle(
-                        color: widget.switchModel.value
-                            ? Colors.black
-                            : Colors.white),
+                        color: widget.value ? Colors.black : Colors.white),
                   )),
                 ],
               ),
